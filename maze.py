@@ -22,11 +22,19 @@ MAZE_PICE_L = '' # Type corner
 MAZE_PICE_X = '' # Type Cross
 
 # *********************************************************************
+# Class Block
+# *********************************************************************
+class Block:
+	def __init__(self):
+		self.blocktype = bt
+		#self.
+
+# *********************************************************************
 # Class Maze
 # *********************************************************************
 class Maze:
     def __init__(self):
     	for row in range(N_ROWS):
     		for col in range(N_COLS):
-    			self.maze[row][col] = block
+    			self.maze[row][col] = Block()
 
