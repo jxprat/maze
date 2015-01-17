@@ -52,16 +52,20 @@ class Block:
 # Class Maze
 # *********************************************************************
 class Maze:
+
     def __init__(self):
+    	self.maze = [[], []]
+    	B = Block('I', 0)
     	for row in range(N_ROWS):
     		for col in range(N_COLS):
-    			self.maze[row][col] = Block('I', 0)
+    			self.maze[row][col] = B
 
     def __str__(self):
     	strmaze = ''
     	for row in range(N_ROWS):
+    		strmaze += '\n'
     		for col in range(N_COLS):
-    			strmaze += self.maze.tipus
+    			strmaze += self.maze.getblocktype()
 
 
 
@@ -103,3 +107,5 @@ class Maze:
 B = Block('M', 270)
 B.rotate()
 print "Block: ", B
+M = Maze()
+print "Maze: ", M
