@@ -10,28 +10,24 @@ from pygame.locals import *
 # *********************************************************************
 # Constants ...
 # *********************************************************************
-N_ROWS = 5	# Number of rows of Maze
-N_COLS = 5 	# Number of columns of Maze
+N_ROWS = 7	# Number of rows of Maze
+N_COLS = 7 	# Number of columns of Maze
 
-PICE_WIDTH = 96
-PICE_HEIGHT = 96
-MARGIN = 50
+PICE_SIZE = 72
+MARGIN = 25 + PICE_SIZE
 
-WINDOW_WIDTH = N_COLS * PICE_WIDTH + 2 * MARGIN
-WINDOW_HEIGHT = N_ROWS * PICE_HEIGHT + 2 * MARGIN
+BLOCK_TYPE = ('I', 'T', 'C', 'X')
+BLOCK_ANGLE = (0, 90, 180, 270)
+
+WINDOW_WIDTH = N_COLS * PICE_SIZE + 2 * MARGIN
+WINDOW_HEIGHT = N_ROWS * PICE_SIZE + 2 * MARGIN
 
 BG_COLOR = (120, 50, 50)
-
-# There are 4 types of pices:
-PICE_TYPE = ('I', 'T', 'L', 'X')
 
 # *********************************************************************
 # Class Block
 # *********************************************************************
 class Block:
-	blocktype = None
-	blockangle = 0
-
 	def __init__(self, bt, angle = 0):
 		self.blocktype = bt
 		self.blockangle = angle
@@ -48,64 +44,116 @@ class Block:
 	def __str__(self):
 		return self.blocktype + '(' + str (self.blockangle) + ')'
 
+
 # *********************************************************************
 # Class Maze
 # *********************************************************************
 class Maze:
-
     def __init__(self):
-    	self.maze = [[], []]
-    	B = Block('I', 0)
-    	for row in range(N_ROWS):
-    		for col in range(N_COLS):
-    			self.maze[row][col] = B
+    	# Initialize the maze matrix ...
+    	self.maze = [Block('I')] * N_ROWS
+    	for i in range(N_ROWS):
+    		self.maze[i] = [Block('I')] * N_COLS
+    	# Randomize maze blocks ...
+    	for i in range(N_ROWS):
+    		for j in range(N_COLS):
+    			b = random.choice(BLOCK_TYPE)
+    			a = random.choice(BLOCK_ANGLE)
+    			self.SetElement(i, j, Block(b, a))
+    	# Set some fixed positions like corners ...
+    	self.SetElement(0, 0, Block('C',90))
+    	self.SetElement(0, N_COLS - 1, Block('C'))
+    	self.SetElement(N_ROWS - 1, 0, Block('C',180))
+    	self.SetElement(N_ROWS - 1, N_COLS - 1, Block('C',270))
+
+    def SetElement(self, row, col, obj):
+    	self.maze[row][col] = obj
+
+    def GetElement(self, row, col):
+    	return self.maze[row][col]
 
     def __str__(self):
     	strmaze = ''
     	for row in range(N_ROWS):
     		strmaze += '\n'
     		for col in range(N_COLS):
-    			strmaze += self.maze.getblocktype()
+    			aux_bl = self.GetElement(row,col)
+    			strmaze += str(aux_bl)
+    	return strmaze
 
+
+# *********************************************************************
+# Functions ...
+# *********************************************************************
+def load_image(bType):
+	if(bType == 'I'):
+		filename = 'images/b1.png'
+	elif(bType == 'T'):
+		filename = 'images/b2.png'
+	elif(bType == 'C'):
+		filename = 'images/b3.png'
+	elif(bType == 'X'):
+		filename = 'images/b4.png'
+	image = pygame.image.load(filename)
+	image = image.convert()
+	return image
+
+def DrawBlock(scr, maze, mazeRow, mazeCol):
+	bl = maze.GetElement(mazeRow,mazeCol)
+	bl_type = bl.getblocktype()
+	bl_angle = bl.getblockangle()
+	img = load_image(bl_type)
+	xPos = MARGIN + PICE_SIZE * mazeCol
+	yPos = MARGIN + PICE_SIZE * mazeRow
+	scr.blit(img, (xPos, yPos))
+	pygame.display.flip()
+
+def DrawMaze(scr, maze):
+	for row in range(N_ROWS):
+		for col in range(N_COLS):
+			DrawBlock(scr, maze, row, col)
 
 
 # *********************************************************************
 # Main Program ...
 # *********************************************************************
 
+# Testing part using characters ...
+M = Maze()
+my_block = M.GetElement(2,2)
+print "Block [2][2]: ", my_block
+print "Maze: ", M
 
 # *********************************************************************
 # Graphic part ...
 # *********************************************************************
-# screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))  # , pygame.RESIZABLE)
-# pygame.display.set_caption("Maze!")
-# ##pygame.display.set_icon(pygame.image.load(LOGO_ICO))
-# pygame.font.init()
+screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))  # , pygame.RESIZABLE)
+pygame.display.set_caption("Maze!")
+##pygame.display.set_icon(pygame.image.load(LOGO_ICO))
+pygame.font.init()
 
-# screen.fill(BG_COLOR)
-# FontGame = pygame.font.SysFont("None", 36, True)  # Default sysfont, size=12 and bold
-# pygame.display.flip()
+screen.fill(BG_COLOR)
+FontGame = pygame.font.SysFont("None", 36, True)  # Default sysfont, size=12 and bold
+pygame.display.flip()
 
-# while True:
-#     for event in pygame.event.get():
-#         if (event.type == QUIT):
-#             sys.exit(0)
-#         elif (event.type == KEYDOWN):  # Key pressed ...
-#             keys = pygame.key.get_pressed()  # Witch key?
-#             if keys[K_n]:  # Test key in keys[]
-#                 pass
-#             elif keys[K_h]:
-#                 pass
-#             elif keys[K_s]:
-#                 pass
-#         elif (event.type == KEYUP):  # Key released ...
-#             if event.key == pygame.K_q:
-#                 sys.exit(0)
-#         else:  # Other events ...
-#             pass
+# Draw initial Maze ...
+DrawMaze(screen, M)
 
-B = Block('M', 270)
-B.rotate()
-print "Block: ", B
-M = Maze()
-print "Maze: ", M
+while True:
+    for event in pygame.event.get():
+        if (event.type == QUIT):
+            sys.exit(0)
+        elif (event.type == KEYDOWN):  # Key pressed ...
+            keys = pygame.key.get_pressed()  # Witch key?
+            if keys[K_n]:  # Test key in keys[]
+                M = Maze()
+                DrawMaze(screen, M)
+            elif keys[K_h]:
+                pass
+            elif keys[K_s]:
+                pass
+        elif (event.type == KEYUP):  # Key released ...
+            if event.key == pygame.K_q:
+                sys.exit(0)
+        else:  # Other events ...
+            pass
