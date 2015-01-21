@@ -61,10 +61,10 @@ class Maze:
     			a = random.choice(BLOCK_ANGLE)
     			self.SetElement(i, j, Block(b, a))
     	# Set some fixed positions like corners ...
-    	self.SetElement(0, 0, Block('C',90))
-    	self.SetElement(0, N_COLS - 1, Block('C'))
-    	self.SetElement(N_ROWS - 1, 0, Block('C',180))
-    	self.SetElement(N_ROWS - 1, N_COLS - 1, Block('C',270))
+    	self.SetElement(0, 0, Block('T',90))
+    	self.SetElement(0, N_COLS - 1, Block('T'))
+    	self.SetElement(N_ROWS - 1, 0, Block('T',180))
+    	self.SetElement(N_ROWS - 1, N_COLS - 1, Block('T',270))
 
     def SetElement(self, row, col, obj):
     	self.maze[row][col] = obj
@@ -122,6 +122,7 @@ def DrawBlock(scr, maze, mazeRow, mazeCol):
 	bl_type = bl.getblocktype()
 	bl_angle = bl.getblockangle()
 	img = load_image(bl_type)
+    # new_img = pygame.transform.rotate(img, bl_angle)
 	xPos = MARGIN + PICE_SIZE * mazeCol
 	yPos = MARGIN + PICE_SIZE * mazeRow
 	scr.blit(img, (xPos, yPos))
