@@ -80,6 +80,14 @@ class Maze:
             b_in = b_out
         return b_out
 
+    def ScrollUp(self, col, block_in):
+        b_in = block_in
+        for row in range(N_ROWS - 1, -1, -1):
+            b_out = self.GetElement(row, col)
+            self.SetElement(row, col, b_in)
+            b_in = b_out
+        return b_out
+
     def ScrollHorizontal(self, row, dir, block_in):
         pass
 
@@ -159,8 +167,11 @@ while True:
             if keys[K_n]:  # Test key in keys[]
                 M = Maze()
                 DrawMaze(screen, M)
-            elif keys[K_h]:
+            elif keys[K_d]:
                 ExtraBlock = M.ScrollDown(3, ExtraBlock)
+                DrawMaze(screen, M)
+            elif keys[K_u]:
+                ExtraBlock = M.ScrollUp(3, ExtraBlock)
                 DrawMaze(screen, M)
             elif keys[K_s]:
                 pass
