@@ -72,6 +72,17 @@ class Maze:
     def GetElement(self, row, col):
     	return self.maze[row][col]
 
+    def ScrollDown(self, col, block_in):
+        b_in = block_in
+        for row in range(N_ROWS):
+            b_out = self.GetElement(row, col)
+            self.SetElement(row, col, b_in)
+            b_in = b_out
+        return b_out
+
+    def ScrollHorizontal(self, row, dir, block_in):
+        pass
+
     def __str__(self):
     	strmaze = ''
     	for row in range(N_ROWS):
@@ -120,8 +131,8 @@ def DrawMaze(scr, maze):
 
 # Testing part using characters ...
 M = Maze()
-my_block = M.GetElement(2,2)
-print "Block [2][2]: ", my_block
+ExtraBlock = M.GetElement(2,2)
+print "Block [2][2]: ", ExtraBlock
 print "Maze: ", M
 
 # *********************************************************************
@@ -149,7 +160,8 @@ while True:
                 M = Maze()
                 DrawMaze(screen, M)
             elif keys[K_h]:
-                pass
+                ExtraBlock = M.ScrollDown(3, ExtraBlock)
+                DrawMaze(screen, M)
             elif keys[K_s]:
                 pass
         elif (event.type == KEYUP):  # Key released ...
