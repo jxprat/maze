@@ -102,6 +102,21 @@ class Maze:
 
 
 # *********************************************************************
+# Class Maze
+# *********************************************************************
+class Player:
+	def __init__(self, p_name):
+		self.palyer_name = p_name 		# Name of the player
+		self.player_image = None		# Avatar of the player
+		self.player_posX = -1 			# posX in the maze. -1 means out of the maze
+		self.player_posY = -1 			# posY in the maze. -1 means out of the maze
+
+	def __str__(self):
+		aux_str = self.player_name + " - (" + str(self.player_posX) + "," + str(self.player_posY) + ")"
+		return aux_str
+
+
+# *********************************************************************
 # Functions ...
 # *********************************************************************
 def load_image(bType):
