@@ -122,10 +122,10 @@ def DrawBlock(scr, maze, mazeRow, mazeCol):
 	bl_type = bl.getblocktype()
 	bl_angle = bl.getblockangle()
 	img = load_image(bl_type)
-    # new_img = pygame.transform.rotate(img, bl_angle)
+	img2 = pygame.transform.rotate(img, bl_angle)
 	xPos = MARGIN + PICE_SIZE * mazeCol
 	yPos = MARGIN + PICE_SIZE * mazeRow
-	scr.blit(img, (xPos, yPos))
+	scr.blit(img2, (xPos, yPos))
 	pygame.display.flip()
 
 def DrawMaze(scr, maze):
