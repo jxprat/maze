@@ -14,7 +14,10 @@ N_ROWS = 7	# Number of rows of Maze
 N_COLS = 7 	# Number of columns of Maze
 
 PICE_SIZE = 72
-MARGIN = 25 + PICE_SIZE
+ARROW_SIZE = 24
+PLAYER_SIZE = 16
+OBJECT_SIZE = 24
+MARGIN = 25 + ARROW_SIZE + PICE_SIZE + OBJECT_SIZE
 
 BLOCK_TYPE = ('I', 'T', 'C', 'X')
 BLOCK_ANGLE = (0, 90, 180, 270)
@@ -160,7 +163,15 @@ def DrawBlock(scr, maze, mazeRow, mazeCol):
 	pygame.display.flip()
 
 def DrawMaze(scr, maze):
+	arrow_right_img = pygame.image.load('images/arrowred.png')
+	arrow_down_img = pygame.transform.rotate(arrow_right_img, 90)
+	arrow_left_img = pygame.transform.rotate(arrow_down_img, 90)
+	arrow_up_img = pygame.transform.rotate(arrow_left_img, 90)
+	xPos = MARGIN - ARROW_SIZE
 	for row in range(N_ROWS):
+		Ypos = MARGIN + row * PICE_SIZE + PICE_SIZE / 3
+		scr.blit(arrow_right_img,(xPos, Ypos))
+		scr.blit(arrow_left_img,(xPos + N_COLS * PICE_SIZE, Ypos))
 		for col in range(N_COLS):
 			DrawBlock(scr, maze, row, col)
 
