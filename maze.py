@@ -10,8 +10,8 @@ from pygame.locals import *
 # *********************************************************************
 # Constants ...
 # *********************************************************************
-N_ROWS = 7	# Number of rows of Maze
-N_COLS = 7 	# Number of columns of Maze
+N_ROWS = 9	# Number of rows of Maze
+N_COLS = 9 	# Number of columns of Maze
 
 PICE_SIZE = 72
 ARROW_SIZE = 24
@@ -162,16 +162,25 @@ def DrawBlock(scr, maze, mazeRow, mazeCol):
 	scr.blit(img2, (xPos, yPos))
 	pygame.display.flip()
 
+def DrawArrows(scr):
+    arrow_right_img = pygame.image.load('images/arrowred.png')
+    arrow_up_img = pygame.transform.rotate(arrow_right_img, 90)
+    arrow_left_img = pygame.transform.rotate(arrow_up_img, 90)
+    arrow_down_img = pygame.transform.rotate(arrow_left_img, 90)
+    xPos = MARGIN - ARROW_SIZE
+    for row in range(1, N_ROWS, 2):
+        Ypos = MARGIN + row * PICE_SIZE + PICE_SIZE / 3
+        scr.blit(arrow_right_img,(xPos, Ypos))
+        scr.blit(arrow_left_img,(xPos + N_COLS * PICE_SIZE + ARROW_SIZE, Ypos))
+    Ypos = MARGIN - ARROW_SIZE
+    for col in range(1, N_COLS, 2):
+        xPos = MARGIN + col * PICE_SIZE + PICE_SIZE / 3
+        scr.blit(arrow_down_img,(xPos, Ypos))
+        scr.blit(arrow_up_img,(xPos, Ypos + N_COLS * PICE_SIZE + ARROW_SIZE))
+    pygame.display.flip()
+
 def DrawMaze(scr, maze):
-	arrow_right_img = pygame.image.load('images/arrowred.png')
-	arrow_down_img = pygame.transform.rotate(arrow_right_img, 90)
-	arrow_left_img = pygame.transform.rotate(arrow_down_img, 90)
-	arrow_up_img = pygame.transform.rotate(arrow_left_img, 90)
-	xPos = MARGIN - ARROW_SIZE
 	for row in range(N_ROWS):
-		Ypos = MARGIN + row * PICE_SIZE + PICE_SIZE / 3
-		scr.blit(arrow_right_img,(xPos, Ypos))
-		scr.blit(arrow_left_img,(xPos + N_COLS * PICE_SIZE, Ypos))
 		for col in range(N_COLS):
 			DrawBlock(scr, maze, row, col)
 
@@ -200,6 +209,7 @@ pygame.display.flip()
 
 # Draw initial Maze ...
 DrawMaze(screen, M)
+DrawArrows(screen)
 
 while True:
     for event in pygame.event.get():
@@ -210,6 +220,7 @@ while True:
             if keys[K_n]:  # Test key in keys[]
                 M = Maze()
                 DrawMaze(screen, M)
+                DrawArrows(screen)
             elif keys[K_d]:
                 ExtraBlock = M.ScrollDown(3, ExtraBlock)
                 DrawMaze(screen, M)
