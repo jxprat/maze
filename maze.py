@@ -10,7 +10,7 @@ from pygame.locals import *
 # *********************************************************************
 # Constants ...
 # *********************************************************************
-N_ROWS = 9	# Number of rows of Maze
+N_ROWS = 7	# Number of rows of Maze
 N_COLS = 9 	# Number of columns of Maze
 
 PICE_SIZE = 72
@@ -176,7 +176,7 @@ def DrawArrows(scr):
     for col in range(1, N_COLS, 2):
         xPos = MARGIN + col * PICE_SIZE + PICE_SIZE / 3
         scr.blit(arrow_down_img,(xPos, Ypos))
-        scr.blit(arrow_up_img,(xPos, Ypos + N_COLS * PICE_SIZE + ARROW_SIZE))
+        scr.blit(arrow_up_img,(xPos, Ypos + N_ROWS * PICE_SIZE + ARROW_SIZE))
     pygame.display.flip()
 
 def DrawMaze(scr, maze):
