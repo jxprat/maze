@@ -162,13 +162,13 @@ def DrawBlock(scr, maze, mazeRow, mazeCol):
 	scr.blit(img2, (xPos, yPos))
 	pygame.display.flip()
 
-def DrawFloatingBlock(src, block, row, col):
+def DrawFloatingBlock(scr, bl, row, col):
 	bl_type = bl.getblocktype()
 	bl_angle = bl.getblockangle()
 	img = load_image(bl_type)
 	img2 = pygame.transform.rotate(img, bl_angle)
-	xPos = MARGIN + PICE_SIZE * mazeCol
-	yPos = MARGIN + PICE_SIZE * mazeRow
+	xPos = MARGIN - PICE_SIZE - ARROW_SIZE + PICE_SIZE * col
+	yPos = MARGIN - PICE_SIZE - ARROW_SIZE + PICE_SIZE * row
 	scr.blit(img2, (xPos, yPos))
 	pygame.display.flip()
 
@@ -220,6 +220,7 @@ pygame.display.flip()
 # Draw initial Maze ...
 DrawMaze(screen, M)
 DrawArrows(screen)
+DrawFloatingBlock(screen, ExtraBlock, 3, 3)
 
 while True:
     for event in pygame.event.get():
