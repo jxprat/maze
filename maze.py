@@ -8,7 +8,7 @@ import pygame
 from pygame.locals import *
 
 # *********************************************************************
-# Constants ...
+# some constants ...
 # *********************************************************************
 N_ROWS = 7	# Number of rows of Maze
 N_COLS = 9 	# Number of columns of Maze
